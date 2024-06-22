@@ -18,16 +18,16 @@ from flet import (
 )
 from serial import SerialTimeoutException, SerialException, PortNotOpenError, Serial
 
-DELAY = 5.0
+DELAY: float = 5.0
 
 def setup_serial(port:str="COM1") -> dict:
     """Returns a serial object with serial and timeout already set"""
-    serial_instance = {
+    serial_instance: dict = {
         "error": None,
         "new_serial": None
     }
     try:
-        new_serial = Serial(port,9600,timeout=DELAY)
+        new_serial: Serial = Serial(port,9600,timeout=DELAY)
         serial_instance.update("new_serial",new_serial)
     except PortNotOpenError:
         serial_instance.update("error","Error al abrir puerto")
@@ -49,7 +49,7 @@ def update_serial_instance(
 
 def setup_threads(func) -> Thread:
     """Returns an initialized thread targeting a function"""
-    arduino_thread = Thread(target=func)
+    arduino_thread: Thread = Thread(target=func)
     arduino_thread.start()
     return arduino_thread
 
@@ -70,7 +70,7 @@ def update_arduino_values(
             continue
         try:
             serial_data = serial_line.readline().decode("utf-8")
-            decoded_data = loads(serial_data)
+            decoded_data: dict = loads(serial_data)
             print(decoded_data)
             humidity_field.value = decoded_data["temperatura"]
             temperature_field.value = decoded_data["humedad"]
